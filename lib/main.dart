@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventku/views/screen/history/history_screen.dart';
 import 'package:inventku/views/screen/homepage/homepage_screen.dart';
 import 'package:inventku/views/screen/item/item_screen.dart';
 
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'InventKu',
       debugShowCheckedModeBanner: false,
-      home: ItemScreen(),
+      // home: HomePageScreen(),
+      // home: ItemScreen(),
+      home: HistoryScreen(),
     );
   }
 }
