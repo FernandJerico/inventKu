@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventku/views/screen/history/history_screen.dart';
 import 'package:inventku/views/screen/homepage/homepage_screen.dart';
 import 'package:inventku/views/screen/item/item_screen.dart';
+import 'package:inventku/views/screen/login/login_screen.dart';
 import 'package:inventku/views/screen/navbar/navbar_screen.dart';
 import 'package:inventku/views/screen/navbar/navbar_view_model.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         // home: HomePageScreen(),
         // home: ItemScreen(),
-        home: NavbarScreen(),
+        home: LoginScreen(),
       ),
     );
   }
