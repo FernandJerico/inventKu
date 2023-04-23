@@ -6,14 +6,16 @@ import 'package:inventku/views/screen/item/item_screen.dart';
 class NavbarViewModel with ChangeNotifier {
   List<NavbarDTO> items = [
     NavbarDTO(
-        label: 'Home', widget: HomePageScreen(), iconData: Icons.home_rounded),
+        label: 'Home',
+        widget: const HomePageScreen(),
+        iconData: Icons.home_rounded),
     NavbarDTO(
         label: 'Barang',
-        widget: ItemScreen(),
+        widget: const ItemScreen(),
         iconData: Icons.dashboard_customize),
     NavbarDTO(
         label: 'Riwayat',
-        widget: HistoryScreen(),
+        widget: const HistoryScreen(),
         iconData: Icons.manage_history_rounded),
   ];
 
