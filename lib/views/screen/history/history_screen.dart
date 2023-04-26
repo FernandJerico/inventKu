@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:inventku/utils/const/app_colors.dart';
+import 'package:inventku/views/screen/item/item_view_model.dart';
+import 'package:provider/provider.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -11,6 +14,7 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<DbManager>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Riwayat'),
@@ -29,6 +33,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               child: TextFormField(
+                onChanged: (value) {
+                  provider.searchData(value);
+                },
                 decoration: InputDecoration(
                   focusColor: AppColors.primaryColor,
                   contentPadding:
@@ -51,42 +58,49 @@ class _HistoryScreenState extends State<HistoryScreen> {
             const SizedBox(
               height: 15,
             ),
-            Expanded(
-              child: ListView.separated(
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return PhysicalShape(
-                    clipper: ShapeBorderClipper(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    color: Colors.white,
-                    shadowColor: AppColors.shadowColor,
-                    elevation: 3,
-                    child: ListTile(
-                      title: const Text('Barang: Oreo Blackpink'),
-                      subtitle: const Text('Jumlah: 50 | Harga: Rp. 10.000'),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
-                          Text('Fernand'),
-                          SizedBox(
-                            height: 5,
+            Consumer<DbManager>(
+              builder: (context, value, child) {
+                final listHistory = value.items;
+                return Expanded(
+                  child: ListView.separated(
+                    itemCount: listHistory.length,
+                    itemBuilder: (context, index) {
+                      final list = listHistory[index];
+                      return PhysicalShape(
+                        clipper: ShapeBorderClipper(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                          Text('12-12-2023'),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    height: 5,
-                  );
-                },
-              ),
-            ),
+                        ),
+                        color: Colors.white,
+                        shadowColor: AppColors.shadowColor,
+                        elevation: 3,
+                        child: ListTile(
+                          title: Text('Barang: ${list.nama}'),
+                          subtitle: Text(
+                              'Jumlah: ${list.stok} | Harga: ${NumberFormat.simpleCurrency(name: 'IDR').format(list.harga)}'),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(list.createdBy),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(list.tanggal),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        height: 5,
+                      );
+                    },
+                  ),
+                );
+              },
+            )
           ],
         ),
       ),
