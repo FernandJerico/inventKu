@@ -26,7 +26,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     logindata = await SharedPreferences.getInstance();
     setState(() {
       username = logindata.getString('username').toString();
-      email = logindata.getString('password').toString();
+      email = logindata.getString('email').toString();
     });
   }
 
@@ -154,7 +154,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 height: 5,
               ),
               const Text(
-                'Jumlah Barang',
+                'Total Stok',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
