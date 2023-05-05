@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inventku/utils/const/app_colors.dart';
@@ -210,9 +212,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   final isValidForm = _formKey.currentState!.validate();
                   String username = _usernameController.text;
+                  String email = _emailController.text;
                   if (isValidForm) {
                     logindata.setBool('login', false);
                     logindata.setString('username', username);
+                    logindata.setString('email', email);
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

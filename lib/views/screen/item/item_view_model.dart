@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
@@ -16,16 +19,20 @@ class DbManager extends ChangeNotifier {
   TextEditingController namaController = TextEditingController();
   TextEditingController hargaController = TextEditingController();
   TextEditingController stokController = TextEditingController();
+  TextEditingController gambarController = TextEditingController();
 
   // shared preferences utk get data username yg sdg login
   String _username = '';
   String get username => _username;
 
-  List<ItemModel> _items = [];
   late DatabaseHelper _dbHelper;
+
+  // list items
+  List<ItemModel> _items = [];
   List<ItemModel> get items => _items;
 
-  List<ItemModel> _favItems = [];
+  // fav items
+  final List<ItemModel> _favItems = [];
   List<ItemModel> get favItems => _favItems;
 
   // tanggal
@@ -42,9 +49,7 @@ class DbManager extends ChangeNotifier {
   String get fileName => _fileName;
 
   void updateDate(DateTime selectDate) {
-    if (selectDate != null) {
-      _date = selectDate;
-    }
+    _date = selectDate;
     notifyListeners();
   }
 
@@ -55,8 +60,8 @@ class DbManager extends ChangeNotifier {
     if (result != null) {
       File file = File(result.files.single.path!);
       String fileName = path.basename(file.path);
-      print('File path: $file');
-      print('File name: $fileName');
+      log('File path: $file');
+      log('File name: $fileName');
 
       _imageBytes = file.readAsBytesSync();
       _fileName = fileName;
@@ -82,7 +87,7 @@ class DbManager extends ChangeNotifier {
       String date = DateFormat('dd/MM/yyyy').format(_date);
       // get username utk createdBy
       SharedPreferences logindata = await SharedPreferences.getInstance();
-      _username = logindata.getString('username') ?? '';
+      _username = logindata.getString('username').toString();
 
       final addItem = ItemModel(
         nama: namaController.text,
@@ -93,12 +98,13 @@ class DbManager extends ChangeNotifier {
         createdBy: _username,
       );
 
-      print(addItem.createdBy);
+      log(addItem.createdBy);
       Provider.of<DbManager>(context, listen: false).addItem(addItem);
 
       namaController.clear();
       hargaController.clear();
       stokController.clear();
+      gambarController.clear();
 
       Navigator.pop(context);
     }
@@ -149,11 +155,13 @@ class DbManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  // menambahkan barang ke list favorite
   void addFavorite(ItemModel item) {
     _favItems.add(item);
     notifyListeners();
   }
 
+  // menghapus barang dari list favorite
   void removeFavorite(ItemModel item) {
     _favItems.remove(item);
     notifyListeners();

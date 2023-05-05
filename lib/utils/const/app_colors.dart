@@ -6,4 +6,5 @@ class AppColors {
   static const primaryBg = Color(0xfff2f4f8);
   static const shadowColor = Color(0xffdee0e0);
   static const dangerButton = Colors.red;
+  static const favButton = Colors.blueAccent;
 }

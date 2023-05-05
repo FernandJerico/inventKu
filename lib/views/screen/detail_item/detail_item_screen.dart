@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -14,9 +13,6 @@ class DetailItemScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String nama = '';
-    // int harga = 0;
-    // int stok = 0;
     final provider = Provider.of<DbManager>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -24,111 +20,101 @@ class DetailItemScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: AppColors.primaryColor,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Center(
-            child: SizedBox(
-              height: 250,
-              width: 300,
-              child: Image.memory(item.gambar!),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.55,
-            child: DecoratedBox(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 241, 244, 244),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(35),
-                    topRight: Radius.circular(35)),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Center(
+              child: SizedBox(
+                height: 250,
+                width: 300,
+                child: Image.memory(item.gambar!),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          item.nama,
-                          style: const TextStyle(
-                              fontSize: 26, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Stok Barang:',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '${(item.stok).toString()} pcs',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Harga Barang:',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          NumberFormat.simpleCurrency(name: 'IDR')
-                              .format(item.harga),
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Dibuat Oleh:',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          item.createdBy,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Tanggal Dibuat:',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          item.tanggal,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ElevatedButton(
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.55,
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 241, 244, 244),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.nama,
+                        style: const TextStyle(
+                            fontSize: 26, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        NumberFormat.simpleCurrency(name: 'IDR')
+                            .format(item.harga),
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Stok Barang:',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '${(item.stok).toString()} pcs',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Dibuat Oleh:',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            item.createdBy,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Tanggal Dibuat:',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            item.tanggal,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.dangerButton,
                                 shape: const StadiumBorder()),
@@ -178,11 +164,10 @@ class DetailItemScreen extends StatelessWidget {
                                 },
                               );
                             },
-                            child: const Text('Hapus')),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        ElevatedButton(
+                            label: const Text('Hapus'),
+                            icon: const Icon(Icons.delete_forever),
+                          ),
+                          ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
                                 shape: const StadiumBorder()),
@@ -198,15 +183,53 @@ class DetailItemScreen extends StatelessWidget {
                               await _showBottomSheet(context, provider,
                                   namaBarang, stokBarang, hargaBarang);
                             },
-                            child: const Text('Edit')),
-                      ],
-                    )
-                  ],
+                            label: const Text('Edit'),
+                            icon: const Icon(Icons.edit),
+                          ),
+                          Consumer<DbManager>(
+                            builder: (context, value, child) {
+                              bool isFavorite = value.favItems
+                                  .any((favorite) => favorite.id == item.id);
+                              return ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.favButton,
+                                    shape: const StadiumBorder()),
+                                onPressed: () {
+                                  if (!isFavorite) {
+                                    value.addFavorite(ItemModel(
+                                      id: item.id,
+                                      nama: item.nama,
+                                      harga: item.harga,
+                                      stok: item.stok,
+                                      tanggal: item.tanggal,
+                                      createdBy: item.createdBy,
+                                      gambar: item.gambar,
+                                    ));
+                                  }
+                                },
+                                icon: Icon(
+                                    isFavorite
+                                        ? Icons.favorite
+                                        : Icons.favorite_outline,
+                                    color:
+                                        isFavorite ? Colors.red : Colors.white),
+                                label:
+                                    Text(isFavorite ? 'Favorited' : 'Favorite'),
+                                onLongPress: () {
+                                  value.removeFavorite(item);
+                                },
+                              );
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -218,17 +241,20 @@ class DetailItemScreen extends StatelessWidget {
       TextEditingController stokBarang,
       TextEditingController hargaBarang) {
     return showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
         return SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           child: SizedBox(
             height: 500,
-            child: Column(children: [
+            child: ListView(shrinkWrap: true, children: [
               const Padding(
                 padding: EdgeInsets.only(top: 10.0),
                 child: Text(
                   'Edit Data',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(
@@ -236,6 +262,7 @@ class DetailItemScreen extends StatelessWidget {
               ),
               Consumer<DbManager>(
                 builder: (context, value, child) {
+                  provider.gambarController.text = value.fileName;
                   return Padding(
                     padding: const EdgeInsets.all(10),
                     child: Form(
@@ -248,8 +275,7 @@ class DetailItemScreen extends StatelessWidget {
                               if (value == null || value.isEmpty) {
                                 return "Nama Barang Tidak Boleh Kosong";
                               } else if (value.contains(
-                                      RegExp(r'[!@#$%^&*(),.?":{}|<>]')) ||
-                                  value.contains(RegExp(r'[0-9]'))) {
+                                  RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
                                 return "Nama Barang Harus Alphabet";
                               } else {
                                 return null;
@@ -282,6 +308,10 @@ class DetailItemScreen extends StatelessWidget {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Stok Barang Tidak Boleh Kosong";
+                              } else if (value.contains(
+                                      RegExp(r'[!@#$%^&*(),.?":{}|<>]')) ||
+                                  value.contains(RegExp(r'[a-z]'))) {
+                                return "Stok Barang Harus Angka";
                               } else {
                                 return null;
                               }
@@ -313,6 +343,10 @@ class DetailItemScreen extends StatelessWidget {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Harga Barang Tidak Boleh Kosong";
+                              } else if (value.contains(
+                                      RegExp(r'[!@#$%^&*(),.?":{}|<>]')) ||
+                                  value.contains(RegExp(r'[a-z]'))) {
+                                return "Harga Barang Harus Angka";
                               } else {
                                 return null;
                               }
@@ -343,7 +377,7 @@ class DetailItemScreen extends StatelessWidget {
                                   onPressed: () async {
                                     final selectDate = await showDatePicker(
                                         context: context,
-                                        initialDate: provider.currentDate,
+                                        initialDate: value.date,
                                         firstDate: DateTime(2022),
                                         lastDate: DateTime(
                                             provider.currentDate.year + 5));
@@ -377,7 +411,19 @@ class DetailItemScreen extends StatelessWidget {
                               const SizedBox(
                                 width: 10,
                               ),
-                              Text(value.fileName)
+                              Expanded(
+                                child: TextFormField(
+                                  enabled: true,
+                                  controller: provider.gambarController,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Gambar Tidak Boleh Kosong";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(
@@ -397,6 +443,8 @@ class DetailItemScreen extends StatelessWidget {
                               if (item.gambar != null) {
                                 item.gambar =
                                     Uint8List.fromList(provider.imageBytes);
+                              } else {
+                                item.gambar = item.gambar;
                               }
                               Provider.of<DbManager>(context, listen: false)
                                   .updateItem(item.id!, item);
