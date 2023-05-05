@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Center(
             child: Image.asset(
           'assets/images/InventKu.png',
-          scale: 3,
+          scale: 3.5,
         )),
       )),
     );

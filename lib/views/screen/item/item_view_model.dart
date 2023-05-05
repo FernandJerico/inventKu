@@ -13,7 +13,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../helper/database_helper.dart';
 
+enum DbManagerState {
+  none,
+  loading,
+  error,
+}
+
 class DbManager extends ChangeNotifier {
+  // getter setter untuk menyimpan state widget
+  DbManagerState _state = DbManagerState.none;
+  DbManagerState get state => _state;
+
+  changeState(DbManagerState s) {
+    _state = s;
+    notifyListeners();
+  }
+
   // formkey dan text controller
   final formKey = GlobalKey<FormState>();
   TextEditingController namaController = TextEditingController();
@@ -119,8 +134,14 @@ class DbManager extends ChangeNotifier {
 
   // get all item from database
   void _getAllItems() async {
-    _items = await _dbHelper.getItem();
-    notifyListeners();
+    changeState(DbManagerState.loading);
+    try {
+      _items = await _dbHelper.getItem();
+      notifyListeners();
+      changeState(DbManagerState.none);
+    } catch (e) {
+      changeState(DbManagerState.error);
+    }
   }
 
   // add item to database
