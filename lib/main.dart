@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventku/views/screen/item/item_view_model.dart';
-import 'package:inventku/views/screen/login/login_screen.dart';
 import 'package:inventku/views/screen/navbar/navbar_view_model.dart';
+import 'package:inventku/views/screen/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
         title: 'InventKu',
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: SplashScreen(),
       ),
     );
   }

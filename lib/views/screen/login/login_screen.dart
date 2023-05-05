@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromRGBO(239, 242, 247, 1),
+      backgroundColor: AppColors.primaryBg,
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -66,10 +66,11 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                      height: 100,
-                      width: 200,
+                      height: 150,
+                      width: 220,
                       child: Image.asset(
                         'assets/images/InventKu.png',
+                        scale: 1,
                       )),
                   Text(
                     'Hello Again!',
