@@ -21,7 +21,7 @@ class DatabaseHelper {
 
   // inisialisasi database
   Future<Database> _initializeDb() async {
-    var db = openDatabase(join(await getDatabasesPath(), 'item_db.db'),
+    final db = openDatabase(join(await getDatabasesPath(), 'item_db.db'),
         onCreate: (db, version) async {
       await db.execute(
         '''CREATE TABLE $_tableName(
