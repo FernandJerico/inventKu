@@ -58,52 +58,71 @@ class _HistoryScreenState extends State<HistoryScreen> {
             const SizedBox(
               height: 15,
             ),
-            Consumer<DbManager>(
-              builder: (context, value, child) {
-                final listHistory = value.items;
-                return Expanded(
-                  child: ListView.separated(
-                    itemCount: listHistory.length,
-                    itemBuilder: (context, index) {
-                      final list = listHistory[index];
-                      return PhysicalShape(
-                        clipper: ShapeBorderClipper(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        color: Colors.white,
-                        shadowColor: AppColors.shadowColor,
-                        elevation: 3,
-                        child: ListTile(
-                          title: Text('Barang: ${list.nama}'),
-                          subtitle: Text(
-                              'Jumlah: ${list.stok} | Harga: ${NumberFormat.simpleCurrency(name: 'IDR').format(list.harga)}'),
-                          trailing: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(list.createdBy),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(list.tanggal),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 5,
-                      );
-                    },
-                  ),
-                );
-              },
-            )
+            Consumer<DbManager>(builder: (context, value, child) {
+              return body(value);
+            }),
           ],
         ),
       ),
+    );
+  }
+
+  Widget body(DbManager value) {
+    final isLoading = value.state == DbManagerState.loading;
+    final isError = value.state == DbManagerState.error;
+
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (isError) {
+      return const Center(child: Text('Gagal mengambil data'));
+    }
+    return listView();
+  }
+
+  Widget listView() {
+    return Consumer<DbManager>(
+      builder: (context, value, child) {
+        final listHistory = value.items;
+        return Expanded(
+          child: ListView.separated(
+            itemCount: listHistory.length,
+            itemBuilder: (context, index) {
+              final list = listHistory[index];
+              return PhysicalShape(
+                clipper: ShapeBorderClipper(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                color: Colors.white,
+                shadowColor: AppColors.shadowColor,
+                elevation: 3,
+                child: ListTile(
+                  title: Text('Barang: ${list.nama}'),
+                  subtitle: Text(
+                      'Jumlah: ${list.stok} | Harga: ${NumberFormat.simpleCurrency(name: 'IDR').format(list.harga)}'),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(list.createdBy),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(list.tanggal),
+                    ],
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(
+                height: 5,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

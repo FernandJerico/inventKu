@@ -84,11 +84,28 @@ class _HomePageScreenState extends State<HomePageScreen> {
             const SizedBox(
               height: 15,
             ),
-            listView()
+            Consumer<DbManager>(
+              builder: (context, value, child) {
+                return body(value);
+              },
+            )
           ],
         ),
       ),
     );
+  }
+
+  Widget body(DbManager value) {
+    final isLoading = value.state == DbManagerState.loading;
+    final isError = value.state == DbManagerState.error;
+
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (isError) {
+      return const Center(child: Text('Gagal mengambil data'));
+    }
+    return listView();
   }
 
   FutureBuilder<SharedPreferences> welcomeScreen() {

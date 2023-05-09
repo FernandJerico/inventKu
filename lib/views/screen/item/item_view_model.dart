@@ -13,7 +13,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../helper/database_helper.dart';
 
+enum DbManagerState {
+  none,
+  loading,
+  error,
+}
+
 class DbManager extends ChangeNotifier {
+  // getter setter untuk menyimpan state widget
+  DbManagerState _state = DbManagerState.none;
+  DbManagerState get state => _state;
+
+  changeState(DbManagerState s) {
+    _state = s;
+    notifyListeners();
+  }
+
   // formkey dan text controller
   final formKey = GlobalKey<FormState>();
   TextEditingController namaController = TextEditingController();
@@ -104,7 +119,7 @@ class DbManager extends ChangeNotifier {
       namaController.clear();
       hargaController.clear();
       stokController.clear();
-      gambarController.clear();
+      _fileName = '';
 
       Navigator.pop(context);
     }
@@ -119,8 +134,14 @@ class DbManager extends ChangeNotifier {
 
   // get all item from database
   void _getAllItems() async {
-    _items = await _dbHelper.getItem();
-    notifyListeners();
+    changeState(DbManagerState.loading);
+    try {
+      _items = await _dbHelper.getItem();
+      notifyListeners();
+      changeState(DbManagerState.none);
+    } catch (e) {
+      changeState(DbManagerState.error);
+    }
   }
 
   // add item to database
@@ -165,5 +186,24 @@ class DbManager extends ChangeNotifier {
   void removeFavorite(ItemModel item) {
     _favItems.remove(item);
     notifyListeners();
+  }
+
+  // sortir barang
+  Future<void> orderBy(String orderBy) async {
+    _items = await _dbHelper.sortData(orderBy);
+    notifyListeners();
+  }
+}
+
+class FilterProvider extends ValueNotifier<String> {
+  FilterProvider() : super('A-Z'); // inisialisasi nilai awal A-Z
+
+  // provider akan menerima parameter value
+  void updateFilter(String value) {
+    // jika ada perubahan nilai, nilai value akan dibandingkan dengan nilai this.value
+    if (value != this.value) {
+      // maka nilai dari value akan assign ke this.value, dan nilai akan terupdate
+      this.value = value;
+    }
   }
 }
