@@ -18,6 +18,8 @@ class _ItemScreenState extends State<ItemScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DbManager>(context, listen: false);
+    final filterProvider = FilterProvider();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Barang'),
@@ -56,8 +58,38 @@ class _ItemScreenState extends State<ItemScreen> {
               'List Katalog',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
+            Row(
+              children: [
+                const Text(
+                  'Sort:',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                ValueListenableBuilder<String>(
+                  valueListenable: filterProvider,
+                  builder: (context, value, child) {
+                    return DropdownButton<String>(
+                      value: value,
+                      items: <String>['A-Z', 'Z-A'].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child:
+                              Text(value, style: const TextStyle(fontSize: 15)),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        filterProvider.updateFilter(newValue!);
+                        provider.orderBy(newValue);
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Consumer<DbManager>(builder: (context, value, child) {
               return body(value);
@@ -90,75 +122,82 @@ class _ItemScreenState extends State<ItemScreen> {
 
   Widget listView() {
     return Consumer<DbManager>(builder: (context, value, child) {
-      final listItem = value.items;
-      return Expanded(
-        child: ListView.separated(
-          itemCount: listItem.length,
-          itemBuilder: (context, index) {
-            final list = listItem[index];
-            return PhysicalShape(
-              clipper: ShapeBorderClipper(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+      if (value.items.isEmpty) {
+        return const Center(
+          child: Text('Belum ada barang'),
+        );
+      } else {
+        final listItem = value.items;
+        return Expanded(
+          child: ListView.separated(
+            itemCount: listItem.length,
+            itemBuilder: (context, index) {
+              final list = listItem[index];
+              return PhysicalShape(
+                clipper: ShapeBorderClipper(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                 ),
-              ),
-              color: Colors.white,
-              shadowColor: AppColors.shadowColor,
-              elevation: 3,
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            DetailItemScreen(item: list),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          final tween = Tween(begin: 0.0, end: 1.0);
-                          return FadeTransition(
-                            opacity: animation.drive(tween),
-                            child: child,
-                          );
-                        },
-                      ));
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //   builder: (context) {
-                  //     return DetailItemScreen(
-                  //       item: list,
-                  //     );
-                  //   },
-                  // ));
-                },
-                leading: SizedBox(
-                  height: 60,
-                  width: 60,
-                  child: Image.memory(list.gambar!),
+                color: Colors.white,
+                shadowColor: AppColors.shadowColor,
+                elevation: 3,
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  DetailItemScreen(item: list),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            final tween = Tween(begin: 0.0, end: 1.0);
+                            return FadeTransition(
+                              opacity: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ));
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //   builder: (context) {
+                    //     return DetailItemScreen(
+                    //       item: list,
+                    //     );
+                    //   },
+                    // ));
+                  },
+                  leading: SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: Image.memory(list.gambar!),
+                  ),
+                  title: Text(list.nama),
+                  subtitle: Text('Stok: ${list.stok}'),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text('Harga:'),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        NumberFormat.simpleCurrency(name: 'IDR')
+                            .format(list.harga),
+                      ),
+                    ],
+                  ),
                 ),
-                title: Text(list.nama),
-                subtitle: Text('Stok: ${list.stok}'),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text('Harga:'),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      NumberFormat.simpleCurrency(name: 'IDR')
-                          .format(list.harga),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(
-              height: 5,
-            );
-          },
-        ),
-      );
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(
+                height: 5,
+              );
+            },
+          ),
+        );
+      }
     });
   }
 

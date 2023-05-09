@@ -119,7 +119,7 @@ class DbManager extends ChangeNotifier {
       namaController.clear();
       hargaController.clear();
       stokController.clear();
-      gambarController.clear();
+      _fileName = '';
 
       Navigator.pop(context);
     }
@@ -186,5 +186,24 @@ class DbManager extends ChangeNotifier {
   void removeFavorite(ItemModel item) {
     _favItems.remove(item);
     notifyListeners();
+  }
+
+  // sortir barang
+  Future<void> orderBy(String orderBy) async {
+    _items = await _dbHelper.sortData(orderBy);
+    notifyListeners();
+  }
+}
+
+class FilterProvider extends ValueNotifier<String> {
+  FilterProvider() : super('A-Z'); // inisialisasi nilai awal A-Z
+
+  // provider akan menerima parameter value
+  void updateFilter(String value) {
+    // jika ada perubahan nilai, nilai value akan dibandingkan dengan nilai this.value
+    if (value != this.value) {
+      // maka nilai dari value akan assign ke this.value, dan nilai akan terupdate
+      this.value = value;
+    }
   }
 }

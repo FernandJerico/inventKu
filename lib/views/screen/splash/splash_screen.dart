@@ -40,16 +40,15 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryBg,
-      body: SafeArea(
-          child: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Center(
+      body: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Center(
             child: Image.asset(
-          'assets/images/InventKu.png',
-          scale: 3.5,
-        )),
-      )),
+              'assets/images/InventKu.png',
+              scale: 3.5,
+            ),
+          )),
     );
   }
 }

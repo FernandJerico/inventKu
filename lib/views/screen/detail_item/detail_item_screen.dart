@@ -434,28 +434,28 @@ class DetailItemScreen extends StatelessWidget {
                                 backgroundColor: AppColors.secondaryColor,
                                 shape: const StadiumBorder()),
                             onPressed: () {
-                              String date = DateFormat('dd/MM/yyyy')
-                                  .format(provider.date);
-                              item.nama = namaBarang.text;
-                              item.harga = int.parse(hargaBarang.text);
-                              item.stok = int.parse(stokBarang.text);
-                              item.tanggal = date;
-                              if (item.gambar != null) {
-                                item.gambar =
-                                    Uint8List.fromList(provider.imageBytes);
-                              } else {
-                                item.gambar = item.gambar;
+                              if (provider.formKey.currentState!.validate()) {
+                                String date = DateFormat('dd/MM/yyyy')
+                                    .format(provider.date);
+                                item.nama = namaBarang.text;
+                                item.harga = int.parse(hargaBarang.text);
+                                item.stok = int.parse(stokBarang.text);
+                                item.tanggal = date;
+                                if (item.gambar != null) {
+                                  item.gambar =
+                                      Uint8List.fromList(provider.imageBytes);
+                                }
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Barang Berhasil Diedit'),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
                               }
                               Provider.of<DbManager>(context, listen: false)
                                   .updateItem(item.id!, item);
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Barang Berhasil Diedit'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
                             },
                             child: const Text('Edit'),
                           ),
